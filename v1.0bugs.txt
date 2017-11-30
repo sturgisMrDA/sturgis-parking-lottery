@@ -1,17 +1,0 @@
-Two syntax errors (missing colon and over-indented elif).
-importToArray is never called: should be called in validate() and result assigned to 'data' before calling emailValidation().
-emailValidation() doesn't return anything [yet its value is assigned to data in validate()]
-emailValidation needs to convert email list back to 2D array
-
-emailValidation needed tons of work!  ugh.
-
-
-def findGrade() needs
- some arguments
-in findGrade(), type conversion issues
-
-line 248: if i.ischeater == True:  reverse i, index in enumerate line
-
-
-
-
