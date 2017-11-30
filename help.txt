@@ -1,0 +1,6 @@
+Sturgis Parking Lottery
+(c) 2017 Sturgis I.B Computer Science Class
+
+Installation
+
+Running the Lottery

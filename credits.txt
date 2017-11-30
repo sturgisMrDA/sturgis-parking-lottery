@@ -1,0 +1,21 @@
+The Sturgis Parking Lottery was developed in 2017 by the students in I.B. Computer Science at Sturgis Charter School, Hyannis, MA under the supervision of Mr. Aaron Dunigan-AtLee.
+
+I.B. Computer Science Students:
+Matt	Aguiar
+Klaire	Barrows
+Ludjy	Butter
+Mark	Doherty
+Jacob	Guthrie
+Alan	Healy
+Ryan	Melehan
+Dwight	Robinson
+Katie	Sanders
+Justin	Turbeville
+Elias	Way
+Michael	Bilodeau
+Theo	Calianos
+James	Prygocki
+William	Smith
+Jack	Wilson
+Madison	Cheverie
+
