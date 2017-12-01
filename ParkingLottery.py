@@ -245,6 +245,12 @@ def runLottery():
             messagebox.showerror("Oops...",
             "That spreadsheet file seems to be missing.")
             return
+        try:
+            parking_spaces = int(spacesEntry.get())
+        except ValueError:
+            messagebox.showerror("Oops...",
+            "Please enter the number of parking spaces available.")
+            return
     #these are the lists, based on priority, that will contain the students
     senCarpool = []
     sen = []
@@ -273,38 +279,25 @@ def runLottery():
     # and adds them to an array which shows the parking order.
     parkingSpots = []
     lotteryNum = 1
-    #randomly orders seniors who carpool and adds them to the array
-    while 0 < len(senCarpool):
-        num = random.randint(0, len(senCarpool) - 1)
-        student = senCarpool[num]
-        del(senCarpool[num])
-        parkingSpots.append([lotteryNum] + student)
-        lotteryNum += 1
-    #randomly orders remaining seniors and adds them to the array
-    while 0 < len(sen):
-        num = random.randint(0, len(sen) - 1)
-        student = sen[num]
-        del(sen[num])
-        parkingSpots.append([lotteryNum] + student)
-        lotteryNum += 1
-    #randomly orders juniors who carpool and adds them to the array
-    while 0 < len(junCarpool):
-        num = random.randint(0, len(junCarpool) - 1)
-        student = junCarpool[num]
-        del(junCarpool[num])
-        parkingSpots.append([lotteryNum] + student)
-        lotteryNum += 1
-    #randomly orders remaining juniors and adds them to the array
-    while 0 < len(jun):
-        num = random.randint(0, len(jun) - 1)
-        student = jun[num]
-        del(jun[num])
-        parkingSpots.append([lotteryNum] + student)
-        lotteryNum += 1
+    # List all availabe parking space numbers
+    available_spaces = list(range(1,parking_spaces+1))
+    # randomly orders seniors who carpool and adds them to the array
+    for group in [senCarpool,sen,junCarpool,jun]:
+        random.shuffle(group)
+        for student in group:
+            spaces_left = len(available_spaces)
+            if spaces_left:
+                num = random.randint(0,len(available_spaces)-1)
+                space = available_spaces.pop(num)
+            else:
+                space = 'none'
+            parkingSpots.append([lotteryNum, space] + student)
+            lotteryNum += 1
+    
     # This code writes the data to a new CSV file
     with open(new_sheet, 'w+', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Parking space']+dataArray[0])
+        writer.writerow(['Lottery Number', 'Parking space']+dataArray[0])
         for row in parkingSpots:
             writer.writerow(row)
         file.close()
@@ -315,9 +308,10 @@ def runLottery():
     messagebox.showinfo("Here we go!", message)
     # Save summary to text file:
     with open(summary_file, 'w') as file:
-        # All columns are +1 because we added the parking space column.
+        file.write('Lottery Number...Parking Space...Name...Email\n')
+        # All columns are +2 because we added two new columns.
         for row in parkingSpots:
-            display_text = '...'.join([str(row[x]) for x in [0, NAME_COL + 1, EMAIL_COL + 1]])
+            display_text = '...'.join([str(row[x]) for x in [0,1, NAME_COL + 2, EMAIL_COL + 2]])
             file.write(display_text + '\n')
         file.close()
     # Display results on the screen.
@@ -326,8 +320,8 @@ def runLottery():
     row = 0
     def advance_text():
         nonlocal row, parkingSpots
-        # All columns are +1 because we added the parking space column.
-        display_text = ': '.join([str(parkingSpots[row][x]) for x in [0, NAME_COL + 1]])
+        # All columns are +2 because we added more columns
+        display_text = ': '.join([str(parkingSpots[row][x]) for x in [0, NAME_COL + 2]])
         lottery_text1.set(lottery_text2.get())
         lottery_text2.set(display_text)
         row += 1
@@ -442,7 +436,7 @@ def main():
     """ Parking Lottery GUI """
     #By: Matt, Mark, Madison, Alan, Justin, MR. D.A.
     # global variables used by other functions
-    global root, file_text, gradEntry, lottery_text1, lottery_text2
+    global root, file_text, gradEntry, spacesEntry, lottery_text1, lottery_text2
     #the code below creates the user interface
     root = Tk()
     root.title('Sturgis Parking Lottery')
@@ -462,28 +456,36 @@ def main():
     # used to determine if students' input for grad year is invalid.
     grad_text = "Current Senior Graduation Year (last two digits):"
     gradLabel = Label(root, text=grad_text)
-    gradLabel.grid(row=1, column=1, columnspan=3)
+    gradLabel.grid(row=0, column=1, columnspan=3)
     gradEntry = Entry(root, width=2)
     gradEntry.insert(0,set_grad_year()) # Set a default value based on current date.
-    gradEntry.grid(row=1, column=4, sticky=W, padx=10, pady=10)
+    gradEntry.grid(row=0, column=4, sticky=W, padx=10, pady=10)
+
+    # Label an entry box to get number of parking spaces,
+    spaces_text = "Number of parking spaces available:"
+    spacesLabel = Label(root, text=spaces_text)
+    spacesLabel.grid(row=5, column=1, columnspan=3)
+    spacesEntry = Entry(root, width=2)
+    spacesEntry.insert(0,42) # Set a default value .
+    spacesEntry.grid(row=5, column=4, sticky=W, padx=10, pady=10)
 
     # Button to choose spreadsheet file
     file_button = Button(root, text='Choose a file...', command=file_choose)
-    file_button.grid(row=2, column=1, padx=10, pady=10, sticky=W)
+    file_button.grid(row=10, column=1, padx=10, pady=10, sticky=W)
     # Display name of chosen file.
     root.filepath = ''
     file_text = StringVar()
     file_text.set("No file chosen.")
     file_label = Label(root, textvariable=file_text)
-    file_label.grid(row=2, column=2, columnspan=5, padx=10, pady=10, sticky=W)
+    file_label.grid(row=10, column=2, columnspan=5, padx=10, pady=10, sticky=W)
 
     # Create button that will validate the students' graduation years
     validatebutton = Button(root, text='Validate', command=validate)
-    validatebutton.grid(row=9, column=1, padx=10, pady=10)
+    validatebutton.grid(row=20, column=1, padx=10, pady=10)
 
     # Create a button that will run the lottery
     lotterybutton= Button(root, text='Run Lottery', command=runLottery)
-    lotterybutton.grid(row=9, column=2, padx=10, pady=10)
+    lotterybutton.grid(row=20, column=2, padx=10, pady=10)
 
     # Create labels that will be used to display lottery results as they are run.
     lottery_text1 = StringVar()
@@ -492,8 +494,8 @@ def main():
     lottery_text2.set("and then click Validate...")
     lottery_label1 = Label(root, textvariable=lottery_text1, anchor=W, width=35)
     lottery_label2 = Label(root, textvariable=lottery_text2, anchor=W, width=35)
-    lottery_label1.grid(row=20, column=1, columnspan = 6, sticky=W)
-    lottery_label2.grid(row=22, column=1, columnspan = 6, sticky=W)
+    lottery_label1.grid(row=30, column=1, columnspan = 6, sticky=W)
+    lottery_label2.grid(row=35, column=1, columnspan = 6, sticky=W)
 
     # Run the whole thing
     root.mainloop()
