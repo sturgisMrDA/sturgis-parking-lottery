@@ -1,6 +1,29 @@
-Sturgis Parking Lottery
-(c) 2017 Sturgis I.B Computer Science Class
+View this file at https://docs.google.com/a/sturgischarterschool.org/document/d/1kDdWPdcYB2ztbTGQQhwmLGHz41rpUzJtwBBUdrWezZE
 
-Installation
+Parking Lottery
+(c) 2017 Sturgis Charter School, IB Computer Science class
 
-Running the Lottery
+Installing the parking lottery:
+Install Python by going to https://www.python.org/downloads/.  Choose the latest version of Python 3.
+Download the file parkinglottery.zip from https://drive.google.com/open?id=1slzm2C9vK-2xVy_OuVg5LJlbwNz8uh5K
+"Unzip" this file (in Windows you right-click and choose Extract All…).  Move all the extracted files to the folder you want this program to live in.
+Running the parking lottery:
+Open the google spreadsheet of applicants and download it as a CSV file (File | Download... | .csv).
+It is recommended you save the file in the same folder on your computer as the Python program 'ParkingLottery.pyw', but it can be saved anywhere you like.
+If you wish, open the CSV file in Excel by double-clicking it, and make any changes or at least make sure it downloaded correctly.
+Run 'ParkingLottery.pyw' by double-clicking it.  A window will pop up.
+
+Enter the year of graduation for current seniors.  For example, if you are running this in Fall 2017, type '18.' 
+Enter the number of available parking spaces. 
+Click "Choose file…" and find the CSV spreadsheet file you just saved.
+Then click 'Validate.'  The python program will check the spreadsheet for the following things:
+that all email addresses are actual Sturgis-type addresses (grad year followed by name, @sturgischarterschool.org);
+that each student's email grad year matches their stated grade (junior or senior)
+that a student who is driving a carpool is not also listed as a passenger;
+that students on JOL have not signed up as carpool drivers.
+If any of these items is amiss, you'll see a message box that informs you, and gives you a chance to automatically fix it.  
+After validation, you can open up the CSV spreadsheet in Excel again, and manually make any changes that are needed.  Save it and close Excel.
+Back in the Parking Lottery window, click 'Run Lottery.'  Students will be assigned parking spots randomly according to the lottery rules.  The results will be saved in a separate spreadsheet called 'ParkingLotteryResults.csv.'  A summary with just names, emails, and parking spaces will be saved in a text file 'ParkingSpaces.txt'.
+As the lottery is run, the results will be scrolled at the bottom of the window.  When it is finished, you can close the Parking Lottery program.
+You can open the results in Excel by double-clicking the 'ParkingLotteryResults.csv' file; this file can also be uploaded back to Google Docs and converted to a Google Spreadsheet if you wish.
+
